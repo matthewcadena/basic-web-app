@@ -18,6 +18,16 @@ describe("QueryProcessor", () => {
           ));
     });
 
+    test('should return Andrew ID', () => {
+        const query = "andrew id";
+        const response: string = QueryProcessor(query);
+        expect(response).toBe((
+            "Your Andrew ID is usually the first letter of your first name followed" +  
+            "by your surname. For example, if your name is Andrew Carnegie, your " +
+            "Andrew ID is 'acarnegie'."
+          ));
+    });
+
     test('should return name', () => {
         const query = "What is your name?";
         const response: string = QueryProcessor(query);

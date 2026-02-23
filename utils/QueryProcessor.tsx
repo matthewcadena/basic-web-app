@@ -7,6 +7,14 @@ export default function QueryProcessor(query: string): string {
     );
   }
 
+  if (query.toLowerCase().includes("andrew id")) {
+    return (
+      "Your Andrew ID is usually the first letter of your first name followed" +  
+      "by your surname. For example, if your name is Andrew Carnegie, your " +
+      "Andrew ID is 'acarnegie'."
+    )
+  }
+
   if (query.toLowerCase().includes("name")) {
     return "Rohan";
   }
