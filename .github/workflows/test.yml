@@ -1,27 +1,25 @@
 name: lint-and-test
 
 on:
-
-push:
-
-branches:
-
-- main
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
-
-lint-and-test:
-
+  lint-and-test:
     runs-on: ubuntu-latest
-
     name: run testing and linting
 
     steps:
+      - name: checkout
+        uses: actions/checkout@v3
 
-    - uses: actions/checkout@v3
+      - name: install deps
+        uses: bahmutov/npm-install@v1
 
-    - uses: bahmutov/npm-install@v1
+      - name: run ESLint
+        run: npm run lint
 
-    - run: npm run lint (Run ESLint)
-
-    - run: npm run test (Run Jest)
+      - name: run Jest
+        run: npm test
