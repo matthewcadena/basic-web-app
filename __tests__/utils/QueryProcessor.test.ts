@@ -45,4 +45,16 @@ describe("QueryProcessor", () => {
         const response: string = QueryProcessor(query);
         expect(response).toBe("4096");
     });
+
+    test("should return subtraction result for minus query", () => {
+        const query = "What is 120 minus 77?";
+        const response: string = QueryProcessor(query);
+        expect(response).toBe("43");
+    });
+
+    test("should return primes from list", () => {
+        const query = "Which of the following numbers are primes: 41, 85, 7, 59, 48?";
+        const response: string = QueryProcessor(query);
+        expect(response).toBe("41, 7, 59");
+    });
 });

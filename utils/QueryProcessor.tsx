@@ -44,6 +44,19 @@ export default function QueryProcessor(query: string): string {
     return (left - right).toString();
   }
 
+  const powerMatch = query
+    .toLowerCase()
+    .match(/what is\s*(-?\d+)\s*to the power of\s*(\d+)\?/);
+  if (powerMatch) {
+    const base = BigInt(powerMatch[1]);
+    const exponent = Number(powerMatch[2]);
+    let result = BigInt(1);
+    for (let i = 0; i < exponent; i += 1) {
+      result *= base;
+    }
+    return result.toString();
+  }
+
   const largestNumbersMatch = query
     .toLowerCase()
     .match(/which of the following numbers is the largest:\s*(.+)\?/);
