@@ -35,6 +35,15 @@ export default function QueryProcessor(query: string): string {
     return (left * right).toString();
   }
 
+  const minusMatch = query
+    .toLowerCase()
+    .match(/what is\s*(-?\d+(?:\.\d+)?)\s*minus\s*(-?\d+(?:\.\d+)?)\?/);
+  if (minusMatch) {
+    const left = Number(minusMatch[1]);
+    const right = Number(minusMatch[2]);
+    return (left - right).toString();
+  }
+
   const largestNumbersMatch = query
     .toLowerCase()
     .match(/which of the following numbers is the largest:\s*(.+)\?/);
@@ -70,6 +79,40 @@ export default function QueryProcessor(query: string): string {
 
     if (matchingNumbers.length > 0) {
       return matchingNumbers[0].toString();
+    }
+  }
+
+  const primesMatch = query
+    .toLowerCase()
+    .match(/which of the following numbers are primes:\s*(.+)\?/);
+  if (primesMatch) {
+    const numbers = primesMatch[1]
+      .split(",")
+      .map((value) => Number(value.trim()))
+      .filter((value) => Number.isInteger(value));
+
+    const isPrime = (value: number): boolean => {
+      if (value <= 1) {
+        return false;
+      }
+      if (value === 2) {
+        return true;
+      }
+      if (value % 2 === 0) {
+        return false;
+      }
+
+      for (let divisor = 3; divisor * divisor <= value; divisor += 2) {
+        if (value % divisor === 0) {
+          return false;
+        }
+      }
+      return true;
+    };
+
+    const primeNumbers = numbers.filter((value) => isPrime(value));
+    if (primeNumbers.length > 0) {
+      return primeNumbers.join(", ");
     }
   }
 
