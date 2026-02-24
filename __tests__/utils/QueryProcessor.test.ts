@@ -22,9 +22,7 @@ describe("QueryProcessor", () => {
         const query = "andrew id";
         const response: string = QueryProcessor(query);
         expect(response).toBe((
-            "Your Andrew ID is usually the first letter of your first name followed" +  
-            "by your surname. For example, if your name is Andrew Carnegie, your " +
-            "Andrew ID is 'acarnegie'."
+            "My Andrew ID is 'mcadena'."
           ));
     });
 
