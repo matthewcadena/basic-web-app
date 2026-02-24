@@ -17,5 +17,28 @@ export default function QueryProcessor(query: string): string {
     return "mcadena";
   }
 
+  const plusMatch = query
+    .toLowerCase()
+    .match(/what is\s*(-?\d+(?:\.\d+)?)\s*plus\s*(-?\d+(?:\.\d+)?)\?/);
+  if (plusMatch) {
+    const left = Number(plusMatch[1]);
+    const right = Number(plusMatch[2]);
+    return (left + right).toString();
+  }
+
+  const largestNumbersMatch = query
+    .toLowerCase()
+    .match(/which of the following numbers is the largest:\s*(.+)\?/);
+  if (largestNumbersMatch) {
+    const numbers = largestNumbersMatch[1]
+      .split(",")
+      .map((value) => Number(value.trim()))
+      .filter((value) => !Number.isNaN(value));
+
+    if (numbers.length > 0) {
+      return Math.max(...numbers).toString();
+    }
+  }
+
   return "";
 }

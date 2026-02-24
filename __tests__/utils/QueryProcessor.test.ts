@@ -32,5 +32,11 @@ describe("QueryProcessor", () => {
         expect(response).toBe((
             "mcadena"
           ));
-    })
+    });
+
+    test("should return sum for plus query", () => {
+        const query = "What is 21 plus 96?";
+        const response: string = QueryProcessor(query);
+        expect(response).toBe("117");
+    });
 });
