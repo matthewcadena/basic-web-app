@@ -26,6 +26,15 @@ export default function QueryProcessor(query: string): string {
     return (left + right).toString();
   }
 
+  const multiplyMatch = query
+    .toLowerCase()
+    .match(/what is\s*(-?\d+(?:\.\d+)?)\s*multiplied by\s*(-?\d+(?:\.\d+)?)\?/);
+  if (multiplyMatch) {
+    const left = Number(multiplyMatch[1]);
+    const right = Number(multiplyMatch[2]);
+    return (left * right).toString();
+  }
+
   const largestNumbersMatch = query
     .toLowerCase()
     .match(/which of the following numbers is the largest:\s*(.+)\?/);
