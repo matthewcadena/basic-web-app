@@ -40,5 +40,29 @@ export default function QueryProcessor(query: string): string {
     }
   }
 
+  const squareAndCubeMatch = query
+    .toLowerCase()
+    .match(/which of the following numbers is both a square and a cube:\s*(.+)\?/);
+  if (squareAndCubeMatch) {
+    const numbers = squareAndCubeMatch[1]
+      .split(",")
+      .map((value) => Number(value.trim()))
+      .filter((value) => Number.isInteger(value));
+
+    const matchingNumbers = numbers.filter((value) => {
+      if (value < 0) {
+        return false;
+      }
+
+      const squareRoot = Math.round(Math.sqrt(value));
+      const cubeRoot = Math.round(Math.cbrt(value));
+      return squareRoot * squareRoot === value && cubeRoot * cubeRoot * cubeRoot === value;
+    });
+
+    if (matchingNumbers.length > 0) {
+      return matchingNumbers[0].toString();
+    }
+  }
+
   return "";
 }
