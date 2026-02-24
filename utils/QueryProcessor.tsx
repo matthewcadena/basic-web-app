@@ -47,6 +47,16 @@ export default function QueryProcessor(query: string): string {
     return (left * middle + right).toString();
   }
 
+  const plusMultiplyMatch = query
+    .toLowerCase()
+    .match(/what is\s*(-?\d+(?:\.\d+)?)\s*plus\s*(-?\d+(?:\.\d+)?)\s*multiplied by\s*(-?\d+(?:\.\d+)?)\?/);
+  if (plusMultiplyMatch) {
+    const left = Number(plusMultiplyMatch[1]);
+    const middle = Number(plusMultiplyMatch[2]);
+    const right = Number(plusMultiplyMatch[3]);
+    return (left + middle * right).toString();
+  }
+
   const minusMatch = query
     .toLowerCase()
     .match(/what is\s*(-?\d+(?:\.\d+)?)\s*minus\s*(-?\d+(?:\.\d+)?)\?/);
@@ -138,6 +148,36 @@ export default function QueryProcessor(query: string): string {
     const primeNumbers = numbers.filter((value) => isPrime(value));
     if (primeNumbers.length > 0) {
       return primeNumbers.join(", ");
+    }
+  }
+
+  const scrabbleScoreMatch = query
+    .toLowerCase()
+    .match(/what is the scrabble score of\s*([a-z]+)\?/);
+  if (scrabbleScoreMatch) {
+    const word = scrabbleScoreMatch[1];
+    const letterScores: Record<string, number> = {
+      a: 1, b: 3, c: 3, d: 2, e: 1, f: 4, g: 2, h: 4, i: 1, j: 8, k: 5, l: 1, m: 3,
+      n: 1, o: 1, p: 3, q: 10, r: 1, s: 1, t: 1, u: 1, v: 4, w: 4, x: 8, y: 4, z: 10
+    };
+
+    const score = word
+      .split("")
+      .reduce((total, letter) => total + (letterScores[letter] || 0), 0);
+    return score.toString();
+  }
+
+  const anagramMatch = query
+    .toLowerCase()
+    .match(/which of the following is an anagram of\s*([a-z]+):\s*(.+)\?/);
+  if (anagramMatch) {
+    const target = anagramMatch[1];
+    const choices = anagramMatch[2].split(",").map((value) => value.trim());
+
+    const normalizedTarget = target.split("").sort().join("");
+    const matchingChoice = choices.find((choice) => choice.split("").sort().join("") === normalizedTarget);
+    if (matchingChoice) {
+      return matchingChoice;
     }
   }
 
