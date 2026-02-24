@@ -19,11 +19,13 @@ export default function QueryProcessor(query: string): string {
 
   const plusMatch = query
     .toLowerCase()
-    .match(/what is\s*(-?\d+(?:\.\d+)?)\s*plus\s*(-?\d+(?:\.\d+)?)\?/);
+    .match(/what is\s*(-?\d+(?:\.\d+)?(?:\s*plus\s*-?\d+(?:\.\d+)?)+)\?/);
   if (plusMatch) {
-    const left = Number(plusMatch[1]);
-    const right = Number(plusMatch[2]);
-    return (left + right).toString();
+    const sum = plusMatch[1]
+      .split(/\s*plus\s*/)
+      .map((value) => Number(value))
+      .reduce((total, value) => total + value, 0);
+    return sum.toString();
   }
 
   const multiplyMatch = query
